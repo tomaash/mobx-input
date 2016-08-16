@@ -1,0 +1,10 @@
+{
+  "globalDependencies": {
+    "react": "registry:dt/react#0.14.0+20160630100702",
+    "node": "registry:dt/node#6.0.0+20160720070758"
+  },
+  "dependencies": {
+    "react-bootstrap": "github:react-bootstrap/react-bootstrap-typescript/index.d.ts",
+    "validator": "registry:npm/validator#4.5.1+20160723033700"
+  }
+}

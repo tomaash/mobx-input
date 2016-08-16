@@ -1,0 +1,13 @@
+.tscache
+.settings
+node_modules
+npm-debug.log
+coverage
+notes.md
+lib
+typings
+test/babel-tests.js
+test/typescript-tests.js*
+.vscode
+dist/
+.build/

@@ -1,0 +1,75 @@
+{
+  "name": "mobx-input",
+  "version": "0.0.1",
+  "description": "Form library for MobX, with observable state and validations",
+  "main": "lib/mobx-input.js",
+  "typings": "lib/mobx-input.d.ts",
+  "scripts": {
+    "test": "npm run quick-build && npm run tape",
+    "full-test": "npm run small-build && npm run build-tests && npm run use-minified && npm run tape && npm run perf",
+    "tape": "tape test/*.js | faucet",
+    "perf": "npm run small-build && time node --expose-gc test/perf/index.js",
+    "prepublish": "npm run quick-build",
+    "quick-build": "tsc",
+    "small-build": "scripts/single-file-build.sh",
+    "test-browser-electron": "npm run small-build && ( browserify test/*.js | tape-run )",
+    "test-browser-chrome": "npm run small-build && ( browserify test/*.js | tape-run --browser chrome )",
+    "test-browser-safari": "npm run small-build && ( browserify test/*.js -t [ babelify --presets [ es2015 ] ] | tape-run --browser safari )",
+    "test-browser-firefox": "npm run small-build && ( browserify test/*.js  | tape-run --browser firefox )",
+    "test-travis": "npm run small-build && tape test/*.js test/perf/index.js && tsc && istanbul cover tape test/*.js",
+    "coverage": "npm run small-build && npm run build-tests && istanbul cover tape test/*.js test/perf/index.js && cat ./coverage/lcov.info|coveralls",
+    "build-tests": "npm run build-typescript-tests && npm run build-babel-tests",
+    "build-typescript-tests": "tsc -m commonjs -t es5 --experimentalDecorators --noImplicitAny --outDir test test/typescript-tests.ts",
+    "build-babel-tests": "babel test/babel/babel-tests.js -o test/babel-tests.js",
+    "use-minified": "cp lib/mobx.min.js lib/mobx.js",
+    "lint": "tslint -c tslint.json src/*.ts src/types/*.ts src/api/*.ts src/core/*.ts src/utils/*.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tomaash/mobx-input"
+  },
+  "author": "Tomas Holas",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tomaash/mobx-input/issues"
+  },
+  "files": [
+    "lib",
+    "LICENSE",
+    "bower.json"
+  ],
+  "homepage": "https://github.com/tomaash/mobx-input",
+  "devDependencies": {
+    "babel-cli": "^6.4.5",
+    "babel-core": "^6.4.5",
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-react": "^6.3.13",
+    "babel-preset-stage-1": "^6.3.13",
+    "babelify": "^7.3.0",
+    "browserify": "^12.0.1",
+    "coveralls": "^2.11.4",
+    "faucet": "0.0.1",
+    "istanbul": "^0.3.21",
+    "lodash.intersection": "^3.2.0",
+    "tape": "^4.2.2",
+    "tape-run": "^2.1.0",
+    "typescript": "^1.8.10",
+    "typings": "^1.3.1",
+    "uglify-js": "^2.6.1"
+  },
+  "dependencies": {
+    "mobx": "^2.3.5",
+    "mobx-react": "^3.5.5",
+    "mustache": "^2.2.1",
+    "react": "^15.3.0",
+    "react-bootstrap": "^0.30.2",
+    "validator": "^5.5.0"
+  },
+  "keywords": [
+    "mobx",
+    "i18n",
+    "translations",
+    "typescript"
+  ]
+}
