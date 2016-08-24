@@ -59,6 +59,7 @@
     "uglify-js": "^2.6.1"
   },
   "dependencies": {
+    "core-js": "^2.4.1",
     "mobx": "^2.3.5",
     "mobx-react": "^3.5.5",
     "mustache": "^2.2.1",

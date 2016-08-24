@@ -1,3 +1,5 @@
+// Do not use this file, it has already been published to NPM
+
 import * as React from 'react'
 import { observable, extendObservable } from 'mobx'
 import { observer } from 'mobx-react'
@@ -9,8 +11,7 @@ const ControlLabel = ReactBootstrap.ControlLabel
 const FormControl = ReactBootstrap.FormControl
 const HelpBlock = ReactBootstrap.HelpBlock
 
-@observer
-export class ValidatedInput extends React.Component<{
+export interface ValidatedInputProps {
   id?: string,
   label: string,
   type?: string,
@@ -18,9 +19,26 @@ export class ValidatedInput extends React.Component<{
   placeholder?: string,
   model: any,
   name: string,
-  validate?: string,
+  validate?: string | Function,
   errorHelp?: any,
-}, {}>{
+  renderFunction?: (props: RenderFunctionProps) => any,
+}
+
+export interface RenderFunctionProps {
+  id?: string,
+  label: string,
+  type?: string,
+  componentClass?: string,
+  placeholder?: string,
+  name: string,
+  changeHandler?: Function,
+  value: any,
+  help: string,
+  validationState: string
+}
+
+@observer
+export class ValidatedInput extends React.Component<ValidatedInputProps, {}>{
   validateFunc: Function
 
   constructor(props) {
@@ -54,7 +72,8 @@ export class ValidatedInput extends React.Component<{
   update = (e) => {
     const {model, name} = this.props
     const form = model.$mobxInputForm
-    model[name] = e.target.value
+    // It's either value, or change event
+    model[name] = e.target ? e.target.value : e
     form[name].touched = true
     this.validateField()
   }
@@ -91,7 +110,16 @@ export class ValidatedInput extends React.Component<{
     if (!this.props.validate) {
       return () => true
     }
-    let rules = this.props.validate.split(',').map(rule => {
+    if (typeof this.props.validate === 'function') {
+      return (val) => {
+        if (!(this.props.validate as Function)(val)) {
+          return this.props.errorHelp
+        } else {
+          return true
+        }
+      }
+    }
+    let rules = (this.props.validate as string).split(',').map(rule => {
       let params = rule.split(':')
       let name = params.shift()
       // 'required' validation is missing from validatorJS
@@ -130,18 +158,31 @@ export class ValidatedInput extends React.Component<{
     const {model, name} = this.props
     const form = model.$mobxInputForm
     const field = form[name]
-    const id = this.props.id || this.props.name
+
+    const props: RenderFunctionProps = {
+      changeHandler: this.update,
+      value: model[name]
+    } as any
+
+    Object.assign(props, field)
+    Object.assign(props, this.props)
+    props.id = props.id || props.name
+
+    if (this.props.renderFunction) {
+      return this.props.renderFunction(props)
+    }
+
     return (
-      <FormGroup controlId={id} validationState={field.validationState} >
-        <ControlLabel>{this.props.label} </ControlLabel>
+      <FormGroup controlId={props.id} validationState={props.validationState} >
+        <ControlLabel>{props.label} </ControlLabel>
         <FormControl
-          id={id}
-          type={this.props.type}
-          componentClass={this.props.componentClass}
-          placeholder={this.props.placeholder}
-          value={model[name]}
-          onChange = {this.update} />
-        {field.help && <HelpBlock>{field.help} </HelpBlock>}
+          id={props.id}
+          type={props.type}
+          componentClass={props.componentClass}
+          placeholder={props.placeholder}
+          value={props.value}
+          onChange = {props.changeHandler} />
+        {props.help && <HelpBlock>{props.help} </HelpBlock>}
       </FormGroup>
     )
   }
