@@ -1,6 +1,6 @@
 # Form validation for [MobX](https://github.com/mobxjs/mobx) and [react-bootstrap](http://react-bootstrap.github.io/).
 
-Taken strong inspiration from: [react-bootstrap-validation](https://github.com/heilhead/react-bootstrap-validation)
+Taken strong inspiration from: [react-bootstrap-validation](https://github.com/heilhead/react-bootstrap-validation), but `mobx-input` depends just on [validator.js](https://github.com/chriso/validator.js/)(18kb minified). React, MobX and `mobx-react` are peerDependencies, assuming you are already using those anyway.
 
 ## Installation:
 
@@ -129,7 +129,7 @@ Any MobX observable object to store all form data
 ### Custom render function and validation function
 It's also possible to provide custom render and validation functions to allow for different design or specialized validated components
 ```js
-const telephoneInputRenderer = 
+const telephoneInputRenderer =
 
 <ValidatedInput
 	label='Phone number'
@@ -137,7 +137,7 @@ const telephoneInputRenderer =
 	validate={(x) => PhoneNumber.parse(x)}
 	errorHelp='Phone number is not valid'
 	model={appState.currentForm}
-	renderFunction={(props) => 
+	renderFunction={(props) =>
 		<FormGroup controlId={props.id} validationState={props.validationState} >
 			<ControlLabel>{props.label} </ControlLabel>
 			<ReactTelephoneInput
@@ -150,7 +150,44 @@ const telephoneInputRenderer =
 			{props.help && <HelpBlock>{props.help} </HelpBlock>}
 		</FormGroup>
 	}
-/>  
+/>
 ```
 
-... More docs soon ...
+### Default render function
+
+You can also specify `defaultRenderFunction` in case you don't want to repeat yourself in every `ValidatedInput`. Just import `{ config }` from `mobx-input`, and override it.
+
+```js
+import { config, ValidatedInput, submit } from 'mobx-input'
+
+const myDefaultRenderFunction = (props) =>
+    <div className={`form-group ${props.validationState ? 'has-error' : ''}`}>
+      <h1>My Own Mega Label</h1>
+      <label for={props.id} className='control-label'>
+        {props.label}
+      </label>
+      {props.componentClass === 'textarea' ?
+        <textarea
+          id={props.id}
+          className='form-control'
+          placeholder={props.placeholder}
+          value={props.value}
+          onChange = {props.changeHandler}
+          />
+        :
+        <input
+          id={props.id}
+          className='form-control'
+          type={props.type}
+          placeholder={props.placeholder}
+          value={props.value}
+          onChange = {props.changeHandler}
+          />
+      }
+      {props.help && <span className='help-block'>
+        {props.help}
+      </span>}
+    </div>
+
+config.defaultRenderFunction = myDefaultRenderFunction
+```

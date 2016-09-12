@@ -1,15 +1,7 @@
-// Do not use this file, it has already been published to NPM
-
 import * as React from 'react'
 import { observable, extendObservable } from 'mobx'
 import { observer } from 'mobx-react'
-import { FormGroup } from 'react-bootstrap'
 import * as validator from 'validator'
-const ReactBootstrap = require('react-bootstrap')
-
-const ControlLabel = ReactBootstrap.ControlLabel
-const FormControl = ReactBootstrap.FormControl
-const HelpBlock = ReactBootstrap.HelpBlock
 
 export interface ValidatedInputProps {
   id?: string,
@@ -35,6 +27,36 @@ export interface RenderFunctionProps {
   value: any,
   help: string,
   validationState: string
+}
+
+export var config = {
+  defaultRenderFunction: (props) =>
+    <div className={`form-group ${props.validationState ? 'has-error' : ''}`}>
+      <label for={props.id} className='control-label'>
+        {props.label}
+      </label>
+      {props.componentClass === 'textarea' ?
+        <textarea
+          id={props.id}
+          className='form-control'
+          placeholder={props.placeholder}
+          value={props.value}
+          onChange = {props.changeHandler}
+          />
+        :
+        <input
+          id={props.id}
+          className='form-control'
+          type={props.type}
+          placeholder={props.placeholder}
+          value={props.value}
+          onChange = {props.changeHandler}
+          />
+      }
+      {props.help && <span className='help-block'>
+        {props.help}
+      </span>}
+    </div>
 }
 
 @observer
@@ -167,24 +189,8 @@ export class ValidatedInput extends React.Component<ValidatedInputProps, {}>{
     Object.assign(props, field)
     Object.assign(props, this.props)
     props.id = props.id || props.name
-
-    if (this.props.renderFunction) {
-      return this.props.renderFunction(props)
-    }
-
-    return (
-      <FormGroup controlId={props.id} validationState={props.validationState} >
-        <ControlLabel>{props.label} </ControlLabel>
-        <FormControl
-          id={props.id}
-          type={props.type}
-          componentClass={props.componentClass}
-          placeholder={props.placeholder}
-          value={props.value}
-          onChange = {props.changeHandler} />
-        {props.help && <HelpBlock>{props.help} </HelpBlock>}
-      </FormGroup>
-    )
+    const renderFunction = this.props.renderFunction || config.defaultRenderFunction
+    return renderFunction(props)
   }
 }
 
