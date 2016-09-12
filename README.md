@@ -10,7 +10,6 @@ Taken strong inspiration from: [react-bootstrap-validation](https://github.com/h
 
 ```js
 import React from 'react'
-import { Button } from 'react-bootstrap'
 import { ValidatedInput, submit } from 'mobx-input'
 
 export class UserRegisterComponent extends React.Component {
@@ -69,12 +68,11 @@ export class UserRegisterComponent extends React.Component {
 						required: 'Password is required'
 					}}
 					/>
-				<Button
+				<button
 					type='submit'
-					bsSize='large'
-					onClick={this.onSubmit}
-					bsStyle='primary'> Register
-				</Button>
+					onClick={this.onSubmit}>
+						Register
+				</button>
 			</div>
 		)
 	}
@@ -85,7 +83,7 @@ Just provide any MobX observable object as `model` to all form fields. All value
 
 ### `ValidatedInput`
 
-An extension of react-bootstrap's `Input` component. Should be used instead of the original one for all the fields that need to be validated. All `ValidatedInput`s should have `name` property defined.
+Should be used instead of the original one for all the fields that need to be validated. All `ValidatedInput`s should have `name` property defined.
 
 **Properties**
 
