@@ -1,6 +1,6 @@
 {
   "name": "mobx-input",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Form library for MobX, with observable state and validations",
   "main": "lib/mobx-input.js",
   "typings": "lib/mobx-input.d.ts",

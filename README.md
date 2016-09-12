@@ -1,4 +1,4 @@
-# Form validation for [MobX](https://github.com/mobxjs/mobx) and [react-bootstrap](http://react-bootstrap.github.io/).
+# Form validation for [MobX](https://github.com/mobxjs/mobx)
 
 Taken strong inspiration from: [react-bootstrap-validation](https://github.com/heilhead/react-bootstrap-validation), but `mobx-input` depends just on [validator.js](https://github.com/chriso/validator.js/)(18kb minified). React, MobX and `mobx-react` are peerDependencies, assuming you are already using those anyway.
 
