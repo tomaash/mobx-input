@@ -180,12 +180,12 @@ export class ValidatedInput extends React.Component<ValidatedInputProps, {}>{
 
   render() {
     const {model, name} = this.props
-    const form = model.$mobxInputForm
-    const field = form[name]
+    const form = model && model.$mobxInputForm
+    const field = form && form[name]
 
     const props: RenderFunctionProps = {
       changeHandler: this.update,
-      value: model[name]
+      value: model && model[name]
     } as any
 
     Object.assign(props, field)
