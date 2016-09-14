@@ -97,7 +97,7 @@ export class ValidatedInput extends React.Component<ValidatedInputProps, {}>{
     const {model, name} = this.props
     const form = model.$mobxInputForm
     // It's either value, or change event
-    model[name] = e.target ? e.target.value : e
+    model[name] = (e && e.target) ? e.target.value : e
     form[name].touched = true
     this.validateField()
   }
