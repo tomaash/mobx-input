@@ -14,6 +14,7 @@ export interface ValidatedInputProps {
   validate?: string | Function,
   errorHelp?: any,
   options?: any,
+  config?: any,
   renderFunction?: (props: RenderFunctionProps) => any,
 }
 
@@ -28,7 +29,8 @@ export interface RenderFunctionProps {
   value: any,
   help: string,
   validationState: string,
-  options?: any
+  options?: any,
+  config?: any,
 }
 
 export var config = {
