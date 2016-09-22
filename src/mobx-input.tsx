@@ -160,6 +160,15 @@ export class ValidatedInput extends React.Component<ValidatedInputProps, {}>{
     })
 
     return val => {
+			// Let's support ad-hoc validation of objects
+			if (val && typeof val === 'object') {
+				if (Object.keys(val).length) {
+					val = JSON.stringify(val)
+				} else {
+					val = undefined
+				}
+			}
+
       let result = true
       rules.forEach(rule => {
         if (typeof validator[rule.name] !== 'function') {
