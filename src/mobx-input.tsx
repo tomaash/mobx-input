@@ -5,7 +5,7 @@ import * as validator from 'validator'
 
 export interface ValidatedInputProps {
   id?: string,
-  label: string,
+  label?: string,
   type?: string,
   componentClass?: string,
   placeholder?: string,
@@ -20,7 +20,7 @@ export interface ValidatedInputProps {
 
 export interface RenderFunctionProps {
   id?: string,
-  label: string,
+  label?: string,
   type?: string,
   componentClass?: string,
   placeholder?: string,
