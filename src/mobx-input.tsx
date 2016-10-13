@@ -36,7 +36,7 @@ export interface RenderFunctionProps {
 export var config = {
   defaultRenderFunction: (props) =>
     <div className={`form-group ${props.validationState ? 'has-error' : ''}`}>
-      <label for={props.id} className='control-label'>
+      <label htmlFor={props.id} className='control-label'>
         {props.label}
       </label>
       {props.componentClass === 'textarea' ?
