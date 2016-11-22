@@ -160,14 +160,14 @@ export class ValidatedInput extends React.Component<ValidatedInputProps, {}>{
     })
 
     return val => {
-			// Let's support ad-hoc validation of objects
-			if (val && typeof val === 'object') {
-				if (Object.keys(val).length) {
-					val = val.toString()
-				} else {
-					val = undefined
-				}
-			}
+      // Let's support ad-hoc validation of objects
+      if (val && typeof val === 'object') {
+        if (Object.keys(val).length) {
+          val = val.toString()
+        } else {
+          val = undefined
+        }
+      }
 
       let result = true
       rules.forEach(rule => {
@@ -222,10 +222,14 @@ export const submit = function (model: any) {
     } else if (!field.component) {
       console.warn('Component not linked to form model: ' + key)
     } else {
-      const result = field.component.validateField(true)
-      if (field.validationState !== null) {
-        valid = false
-        errors[key] = result
+      if (field.component.validateField) {
+        const result = field.component.validateField(true)
+        if (field.validationState !== null) {
+          valid = false
+          errors[key] = result
+        }
+      } else {
+        console.warn('validateField not initialized for ' + key + ', skipping validation')
       }
     }
   })
