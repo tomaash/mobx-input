@@ -70,8 +70,8 @@ export class ValidatedInput extends React.Component<ValidatedInputProps, {}>{
   constructor(props) {
     super(props)
     const {name, model} = this.props
-    // Add current field to observable model
-    if (model[name] === undefined) extendObservable(model, { [name]: undefined })
+    // Add current field to observable model (if not already observable, prefill unobservable value)
+    if (model.$mobx.values[name] === undefined) extendObservable(model, { [name]: model[name] })
     // Create internal form data field
     if (!model.$mobxInputForm) {
       Object.defineProperty(model, '$mobxInputForm', {
