@@ -107,6 +107,10 @@ export class ValidatedInput extends React.Component<ValidatedInputProps, {}>{
 	validateField = (force?: boolean) => {
 		const {model, name} = this.props
 		const form = model.$mobxInputForm
+		if (!form) {
+			console.error(`$mobxInputForm attribute was removed, defaulting to true on ${name}`)
+			return true
+		}
 		const field = form[name]
 		const result = this.validateFunc(model[name])
 		if (result === true || (!field.touched && !force)) {
@@ -214,7 +218,7 @@ export const submit = function (model: any) {
 	var errors = {}
 	var values = {}
 	if (!form) {
-		console.error('$mobxInputForm attribute was removed, defaulting to {valid:true}')
+		console.error('$mobxInputForm attribute was removed, submit defaulting to {valid:true}')
 		return { valid, values, errors }
 	}
 	keys.forEach((key) => {
