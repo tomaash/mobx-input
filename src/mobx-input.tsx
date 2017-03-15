@@ -97,11 +97,15 @@ export class ValidatedInput extends React.Component<ValidatedInputProps, {}>{
 
 	update = (e) => {
 		const {model, name} = this.props
-		const form = model.$mobxInputForm
 		// It's either value, or change event
 		model[name] = (e && e.target) ? e.target.value : e
-		form[name].touched = true
-		this.validateField()
+		const form = model.$mobxInputForm
+		if (!form) {
+			console.error(`$mobxInputForm attribute was removed, not updating on ${name}`)
+		} else {
+			form[name].touched = true
+			this.validateField()
+		}
 	}
 
 	validateField = (force?: boolean) => {
